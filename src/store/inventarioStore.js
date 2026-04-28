@@ -5,7 +5,6 @@ import {
   getEquipos,
   createEquipo,
   updateEquipo,
-  deleteEquipo,
 } from '@/services/inventarioService'
 
 export const useInventarioStore = defineStore('inventario', () => {
@@ -17,13 +16,15 @@ export const useInventarioStore = defineStore('inventario', () => {
   // --- ACTIONS ---
 
   /**
-   * Carga todos los equipos desde Firestore
-   */
+     * Carga todos los equipos desde Firestore y filtra los inactivos
+     */
   const fetchEquipos = async () => {
     isLoading.value = true
     error.value = null
     try {
-      equipos.value = await getEquipos()
+      const data = await getEquipos()
+      // Filtramos para mantener solo los activos (o los que no tengan el campo estado definido aún)
+      equipos.value = data.filter((e) => e.estado !== 'Inactivo')
     } catch (err) {
       console.error(err)
       error.value = 'No se pudieron cargar los equipos.'
@@ -31,6 +32,7 @@ export const useInventarioStore = defineStore('inventario', () => {
       isLoading.value = false
     }
   }
+
 
   /**
    * Llama al servicio para crear un equipo y actualiza el estado local
@@ -59,13 +61,18 @@ export const useInventarioStore = defineStore('inventario', () => {
     isLoading.value = true
     error.value = null
     try {
-      const equipoActualizado = await updateEquipo(id, equipoData)
-      // Reemplazamos el ítem en el array local
+      await updateEquipo(id, equipoData) // Esperamos a que Firebase guarde
+
       const index = equipos.value.findIndex((e) => e.id === id)
       if (index !== -1) {
-        equipos.value[index] = equipoActualizado
+        // IMPORTANTE: Combinamos los datos anteriores con los nuevos
+        // usando el operador spread (...) para no perder los campos viejos
+        equipos.value[index] = {
+          ...equipos.value[index],
+          ...equipoData
+        }
       }
-      return equipoActualizado
+      return equipos.value[index]
     } catch (err) {
       console.error(err)
       error.value = 'No se pudo actualizar el equipo.'
@@ -76,18 +83,19 @@ export const useInventarioStore = defineStore('inventario', () => {
   }
 
   /**
-   * Llama al servicio para eliminar un equipo y actualiza el estado local
-   */
+     * Llama al servicio para hacer un "Soft Delete" (Eliminación Lógica)
+     */
   const removeEquipo = async (id) => {
     isLoading.value = true
     error.value = null
     try {
-      await deleteEquipo(id)
-      // Eliminamos el ítem del array local
+      // En lugar de usar deleteEquipo(id), actualizamos el estado
+      await updateEquipo(id, { estado: 'Inactivo' })
+      // Eliminamos el ítem del array local para que desaparezca de la tabla
       equipos.value = equipos.value.filter((e) => e.id !== id)
     } catch (err) {
       console.error(err)
-      error.value = 'No se pudo eliminar el equipo.'
+      error.value = 'No se pudo dar de baja el equipo.'
       throw err
     } finally {
       isLoading.value = false

@@ -26,9 +26,19 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
-          path: '',
+          path: '', // La ruta por defecto será el Dashboard
+          name: 'dashboard',
+          component: () => import('@/pages/DashboardPage.vue'),
+        },
+        {
+          path: '/inventario',
           name: 'inventario',
           component: () => import('@/pages/InventarioPage.vue'),
+        },
+        {
+          path: 'ubicaciones',
+          name: 'ubicaciones',
+          component: () => import('@/pages/UbicacionesPage.vue'),
         },
         {
           path: 'admin/usuarios',

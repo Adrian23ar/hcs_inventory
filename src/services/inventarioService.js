@@ -5,7 +5,6 @@ import {
   getDocs,
   addDoc,
   updateDoc,
-  deleteDoc,
   doc,
   serverTimestamp,
 } from 'firebase/firestore'
@@ -44,12 +43,4 @@ export const updateEquipo = async (id, equipoData) => {
   const docRef = doc(db, 'inventario', id)
   await updateDoc(docRef, equipoData)
   return { id, ...equipoData }
-}
-
-/**
- * Elimina un equipo.
- */
-export const deleteEquipo = async (id) => {
-  const docRef = doc(db, 'inventario', id)
-  await deleteDoc(docRef)
 }

@@ -29,8 +29,24 @@ const isRouteActive = (path) => {
             ? 'bg-green-100 text-green-700 font-semibold'
             : 'text-gray-700 hover:bg-gray-100'
         ]" @click="visible = false">
+          <i class="pi pi-home text-xl"></i>
+          <span class="text-base">Dashboard</span>
+        </RouterLink>
+        <RouterLink to="/inventario" class="flex items-center gap-3 p-3 rounded-md transition-colors duration-200" :class="[
+          isRouteActive('/inventario')
+            ? 'bg-green-100 text-green-700 font-semibold'
+            : 'text-gray-700 hover:bg-gray-100'
+        ]" @click="visible = false">
           <i class="pi pi-box text-xl"></i>
           <span class="text-base">Inventario</span>
+        </RouterLink>
+        <RouterLink to="/ubicaciones" class="flex items-center gap-3 p-3 rounded-md transition-colors duration-200" :class="[
+          isRouteActive('/ubicaciones')
+            ? 'bg-green-100 text-green-700 font-semibold'
+            : 'text-gray-700 hover:bg-gray-100'
+        ]" @click="visible = false">
+          <i class="pi pi-map-marker text-xl"></i>
+          <span class="text-base">Ubicaciones</span>
         </RouterLink>
 
         <RouterLink v-if="authStore.userRole === 'admin'" to="/admin/usuarios"
