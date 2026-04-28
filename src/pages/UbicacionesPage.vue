@@ -10,6 +10,7 @@ import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
 import { useUbicacionesStore } from '@/store/ubicacionesStore'
 import GenericFormPrompt from '@/components/GenericFormPrompt.vue'
+import { getErrorMessage } from '@/utils/errorHandler'
 
 const dialog = useDialog()
 const toast = useToast()
@@ -58,7 +59,12 @@ const abrirModalUbicacion = (ubicacion = null) => {
             toast.add({ severity: 'success', summary: 'Creada', detail: 'Ubicación registrada.', life: 3000 })
           }
         } catch (error) {
-          toast.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al guardar.', life: 3000 })
+          toast.add({
+            severity: 'error',
+            summary: 'Ocurrió un error al eliminar',
+            detail: getErrorMessage(error), // <--- Usamos el traductor
+            life: 4000
+          })
         }
       }
     }
@@ -78,7 +84,13 @@ const confirmarEliminar = (ubicacion) => {
         await ubicacionesStore.removeUbicacion(ubicacion.id)
         toast.add({ severity: 'success', summary: 'Eliminada', detail: 'Ubicación borrada.', life: 3000 })
       } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar.', life: 3000 })
+        console.error('Error al eliminar:', error)
+        toast.add({
+          severity: 'error',
+          summary: 'Ocurrió un error al eliminar',
+          detail: getErrorMessage(error), // <--- Usamos el traductor
+          life: 4000
+        })
       }
     }
   })

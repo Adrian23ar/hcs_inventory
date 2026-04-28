@@ -437,7 +437,7 @@ const formatSpecKey = (key) => {
       :value="inventarioStore.equipos" :loading="inventarioStore.isLoading" paginator :rows="10"
       :rowsPerPageOptions="[5, 10, 20, 50]" removableSort stripedRows tableStyle="min-width: 50rem"
       responsiveLayout="stack" breakpoint="768px" sortField="codigo_equipo" :sortOrder="1">
-      <<template #header>
+      <template #header>
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
             <h1 class="text-3xl font-bold text-gray-800">Inventario de Equipos</h1>
