@@ -458,132 +458,132 @@ const formatSpecKey = (key) => {
             </div>
           </div>
         </div>
-</template>
+      </template>
 
-<template #empty> No se encontraron equipos. </template>
-<template #loading> Cargando datos del inventario... </template>
+      <template #empty> No se encontraron equipos. </template>
+      <template #loading> Cargando datos del inventario... </template>
 
-<Column field="codigo_equipo" header="Código" sortable style="width: 10%">
-  <template #body="slotProps">
-    {{ valOrNA(slotProps.data.codigo_equipo) }}
-  </template>
-</Column>
+      <Column field="codigo_equipo" header="Código" sortable style="width: 10%">
+        <template #body="slotProps">
+          {{ valOrNA(slotProps.data.codigo_equipo) }}
+        </template>
+      </Column>
 
-<Column field="serial" header="Serial" sortable style="width: 15%">
-  <template #body="slotProps">
-    {{ valOrNA(slotProps.data.serial) }}
-  </template>
-</Column>
+      <Column field="serial" header="Serial" sortable style="width: 15%">
+        <template #body="slotProps">
+          {{ valOrNA(slotProps.data.serial) }}
+        </template>
+      </Column>
 
-<Column field="tipo_equipo" header="Tipo" sortable style="width: 15%">
-  <template #body="slotProps">
-    {{ valOrNA(slotProps.data.tipo_equipo) }}
-  </template>
-</Column>
+      <Column field="tipo_equipo" header="Tipo" sortable style="width: 15%">
+        <template #body="slotProps">
+          {{ valOrNA(slotProps.data.tipo_equipo) }}
+        </template>
+      </Column>
 
-<Column field="marca" header="Marca" sortable style="width: 15%">
-  <template #body="slotProps">
-    {{ valOrNA(slotProps.data.marca) }}
-  </template>
-</Column>
+      <Column field="marca" header="Marca" sortable style="width: 15%">
+        <template #body="slotProps">
+          {{ valOrNA(slotProps.data.marca) }}
+        </template>
+      </Column>
 
-<Column field="modelo" header="Modelo" style="width: 15%">
-  <template #body="slotProps">
-    {{ valOrNA(slotProps.data.modelo) }}
-  </template>
-</Column>
+      <Column field="modelo" header="Modelo" style="width: 15%">
+        <template #body="slotProps">
+          {{ valOrNA(slotProps.data.modelo) }}
+        </template>
+      </Column>
 
-<Column field="lugar" header="Lugar" sortable style="width: 15%">
-  <template #body="slotProps">
-    {{ valOrNA(slotProps.data.lugar) }}
-  </template>
-</Column>
+      <Column field="lugar" header="Lugar" sortable style="width: 15%">
+        <template #body="slotProps">
+          {{ valOrNA(slotProps.data.lugar) }}
+        </template>
+      </Column>
 
-<Column header="Especificaciones" style="width: 20%">
-  <template #body="slotProps">
-    <div v-if="slotProps.data.especificaciones">
-      <span v-for="(value, key) in slotProps.data.especificaciones" :key="key" class="block text-sm">
-        <strong>{{ formatSpecKey(key) }}:</strong> {{ value }}
-      </span>
-    </div>
-    <span v-else>N/A</span>
-  </template>
-</Column>
-
-<Column header="Acciones" :exportable="false" style="width: 10%">
-  <template #body="slotProps">
-    <Button icon="pi pi-ellipsis-v" text rounded aria-haspopup="true" aria-controls="actions_menu"
-      @click="toggleActionsMenu($event, slotProps.data)" />
-  </template>
-</Column>
-</DataTable>
-
-<Menu ref="menuRef" :model="actionsMenuModel" :popup="true" />
-<Dialog v-model:visible="mostrarModalMtto" modal
-  :header="'Mantenimiento: ' + (equipoParaMtto?.codigo_equipo !== 'N/A' ? equipoParaMtto?.codigo_equipo : equipoParaMtto?.modelo)"
-  :style="{ width: '90vw', maxWidth: '650px' }">
-  <div class="flex flex-col gap-5 mt-2">
-
-    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
-      <h3 class="font-bold text-gray-800 mb-3 text-lg">Registrar Nueva Tarea</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
-          <input type="date" v-model="formMtto.fecha"
-            class="w-full p-2 border rounded border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Servicio</label>
-          <select v-model="formMtto.tipo"
-            class="w-full p-2 border rounded border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
-            <option value="Preventivo">Preventivo (Limpieza, revisión)</option>
-            <option value="Correctivo">Correctivo (Reparación, cambio pieza)</option>
-          </select>
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700 mb-1">Descripción de tareas realizadas</label>
-        <textarea v-model="formMtto.descripcion"
-          class="w-full p-2 border rounded border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none" rows="3"
-          placeholder="Ej: Limpieza interna, limpieza de periféricos, actualización de firmware..."></textarea>
-      </div>
-      <div class="flex justify-end">
-        <Button label="Guardar Registro" icon="pi pi-save" @click="guardarMantenimiento" />
-      </div>
-    </div>
-
-    <div>
-      <h3 class="font-bold text-gray-800 mb-3 text-lg flex justify-between items-center">
-        Historial de Mantenimientos
-        <span v-if="equipoParaMtto?.proxima_fecha_mantenimiento"
-          class="text-xs font-normal bg-blue-100 text-blue-800 px-2 py-1 rounded">
-          Próximo: {{ equipoParaMtto.proxima_fecha_mantenimiento }}
-        </span>
-      </h3>
-
-      <div v-if="equipoParaMtto?.historial_mantenimiento?.length > 0"
-        class="flex flex-col gap-3 max-h-64 overflow-y-auto pr-2">
-        <div v-for="mtto in equipoParaMtto.historial_mantenimiento" :key="mtto.id"
-          class="p-3 border border-gray-200 rounded-lg bg-white shadow-sm relative">
-          <div class="flex justify-between border-b border-gray-100 pb-2 mb-2">
-            <span class="font-bold text-gray-700">{{ mtto.fecha }}</span>
-            <span class="px-2 py-0.5 rounded text-xs font-medium"
-              :class="mtto.tipo === 'Preventivo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
-              {{ mtto.tipo }}
+      <Column header="Especificaciones" style="width: 20%">
+        <template #body="slotProps">
+          <div v-if="slotProps.data.especificaciones">
+            <span v-for="(value, key) in slotProps.data.especificaciones" :key="key" class="block text-sm">
+              <strong>{{ formatSpecKey(key) }}:</strong> {{ value }}
             </span>
           </div>
-          <p class="text-gray-600 text-sm whitespace-pre-wrap">{{ mtto.descripcion }}</p>
-        </div>
-      </div>
-      <div v-else class="text-center py-6 bg-gray-50 border border-dashed border-gray-300 rounded-lg">
-        <i class="pi pi-inbox text-2xl text-gray-400 mb-2"></i>
-        <p class="text-sm text-gray-500">No hay mantenimientos registrados aún.</p>
-      </div>
-    </div>
+          <span v-else>N/A</span>
+        </template>
+      </Column>
 
+      <Column header="Acciones" :exportable="false" style="width: 10%">
+        <template #body="slotProps">
+          <Button icon="pi pi-ellipsis-v" text rounded aria-haspopup="true" aria-controls="actions_menu"
+            @click="toggleActionsMenu($event, slotProps.data)" />
+        </template>
+      </Column>
+    </DataTable>
+
+    <Menu ref="menuRef" :model="actionsMenuModel" :popup="true" />
+    <Dialog v-model:visible="mostrarModalMtto" modal
+      :header="'Mantenimiento: ' + (equipoParaMtto?.codigo_equipo !== 'N/A' ? equipoParaMtto?.codigo_equipo : equipoParaMtto?.modelo)"
+      :style="{ width: '90vw', maxWidth: '650px' }">
+      <div class="flex flex-col gap-5 mt-2">
+
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+          <h3 class="font-bold text-gray-800 mb-3 text-lg">Registrar Nueva Tarea</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+              <input type="date" v-model="formMtto.fecha"
+                class="w-full p-2 border rounded border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Servicio</label>
+              <select v-model="formMtto.tipo"
+                class="w-full p-2 border rounded border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                <option value="Preventivo">Preventivo (Limpieza, revisión)</option>
+                <option value="Correctivo">Correctivo (Reparación, cambio pieza)</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Descripción de tareas realizadas</label>
+            <textarea v-model="formMtto.descripcion"
+              class="w-full p-2 border rounded border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none" rows="3"
+              placeholder="Ej: Limpieza interna, limpieza de periféricos, actualización de firmware..."></textarea>
+          </div>
+          <div class="flex justify-end">
+            <Button label="Guardar Registro" icon="pi pi-save" @click="guardarMantenimiento" />
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-gray-800 mb-3 text-lg flex justify-between items-center">
+            Historial de Mantenimientos
+            <span v-if="equipoParaMtto?.proxima_fecha_mantenimiento"
+              class="text-xs font-normal bg-blue-100 text-blue-800 px-2 py-1 rounded">
+              Próximo: {{ equipoParaMtto.proxima_fecha_mantenimiento }}
+            </span>
+          </h3>
+
+          <div v-if="equipoParaMtto?.historial_mantenimiento?.length > 0"
+            class="flex flex-col gap-3 max-h-64 overflow-y-auto pr-2">
+            <div v-for="mtto in equipoParaMtto.historial_mantenimiento" :key="mtto.id"
+              class="p-3 border border-gray-200 rounded-lg bg-white shadow-sm relative">
+              <div class="flex justify-between border-b border-gray-100 pb-2 mb-2">
+                <span class="font-bold text-gray-700">{{ mtto.fecha }}</span>
+                <span class="px-2 py-0.5 rounded text-xs font-medium"
+                  :class="mtto.tipo === 'Preventivo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                  {{ mtto.tipo }}
+                </span>
+              </div>
+              <p class="text-gray-600 text-sm whitespace-pre-wrap">{{ mtto.descripcion }}</p>
+            </div>
+          </div>
+          <div v-else class="text-center py-6 bg-gray-50 border border-dashed border-gray-300 rounded-lg">
+            <i class="pi pi-inbox text-2xl text-gray-400 mb-2"></i>
+            <p class="text-sm text-gray-500">No hay mantenimientos registrados aún.</p>
+          </div>
+        </div>
+
+      </div>
+    </Dialog>
   </div>
-</Dialog>
-</div>
 </template>
 
 <style>
