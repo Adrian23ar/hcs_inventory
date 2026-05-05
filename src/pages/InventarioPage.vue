@@ -202,7 +202,7 @@ const abrirModalEquipo = (equipo = null) => {
       header: equipo ? `Editar: ${equipo.codigo_equipo}` : 'Agregar Nuevo Equipo',
       modal: true,
       style: isMobile.value
-        ? { width: '95vw' } // En móvil
+        ? { width: '95vw', } // En móvil
         : { width: '90vw', 'max-width': '1200px' } // En desktop
     },
     data: {
@@ -431,92 +431,117 @@ const formatSpecKey = (key) => {
 </script>
 
 <template>
-  <div class="bg-white rounded-lg shadow-sm p-1 border border-gray-200">
-    <DataTable v-model:filters="filters"
-      :globalFilterFields="['codigo_equipo', 'serial', 'marca', 'modelo', 'lugar', 'ip', 'mac_address']"
-      :value="inventarioStore.equipos" :loading="inventarioStore.isLoading" paginator :rows="10"
-      :rowsPerPageOptions="[5, 10, 20, 50]" removableSort stripedRows tableStyle="min-width: 50rem"
-      responsiveLayout="stack" breakpoint="768px" sortField="codigo_equipo" :sortOrder="1">
-      <template #header>
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div>
-            <h1 class="text-3xl font-bold text-gray-800">Inventario de Equipos</h1>
-            <p class="text-gray-500">Gestión de infraestructura tecnológica del hotel.</p>
-          </div>
-          <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-            <span class="relative">
-              <i class="pi pi-search absolute left-3 top-2/4 -mt-2 text-gray-400" />
-              <InputText v-model="filters['global'].value" placeholder="Buscar equipo, serial, IP..."
-                class="pl-10 w-full md:w-64" />
-            </span>
-            <div class="flex gap-2 justify-end">
-              <Button label="Excel" icon="pi pi-file-excel" severity="success" @click="handleExportarExcel"
-                :class="{ 'hidden md:flex': isMobile }" />
-              <Button label="PDF" icon="pi pi-file-pdf" severity="danger" @click="handleExportarPDF"
-                :class="{ 'hidden md:flex': isMobile }" />
-              <Button label="Nuevo" icon="pi pi-plus" @click="abrirModalEquipo()" />
+  <div class="rounded">
+    <!-- Contenedor Principal -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+
+      <DataTable v-model:filters="filters"
+        :globalFilterFields="['codigo_equipo', 'serial', 'marca', 'modelo', 'lugar', 'ip', 'mac_address']"
+        :value="inventarioStore.equipos" :loading="inventarioStore.isLoading" paginator :rows="10"
+        :rowsPerPageOptions="[5, 10, 20, 50]" removableSort stripedRows tableStyle="min-width: 50rem"
+        responsiveLayout="stack" breakpoint="768px" sortField="codigo_equipo" :sortOrder="1" class="p-datatable-sm p-4 text-xs">
+        <!-- Encabezado Personalizado -->
+        <template #header>
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4 p-2">
+            <div>
+              <h1 class="text-2xl font-bold text-slate-800">Inventario de Equipos</h1>
+              <p class="text-slate-500 text-sm">Gestión de infraestructura tecnológica del hotel.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6 w-full md:w-auto">
+              <!-- Buscador Estilo Imagen -->
+              <div class="relative">
+                <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <InputText v-model="filters['global'].value" placeholder="Buscar equipo, serial, IP..."
+                  class="!pl-10 w-full md:w-72 !text-sm border-slate-200 focus:ring-emerald-500 focus:border-emerald-500" />
+              </div>
+
+              <div class="flex gap-3 !text-sm justify-center md:justify-end ">
+                <Button label="Excel" icon="pi pi-file-excel" class="!text-sm" severity="success" @click="handleExportarExcel"
+                  :class="{ 'hidden md:flex': isMobile }" />
+                <Button label="PDF" icon="pi pi-file-pdf" class="!text-sm" severity="danger" @click="handleExportarPDF"
+                  :class="{ 'hidden md:flex': isMobile }" />
+                <Button label="Nuevo" icon="pi pi-plus" class="!text-sm" @click="abrirModalEquipo()" />
+              </div>
             </div>
           </div>
-        </div>
-      </template>
-
-      <template #empty> No se encontraron equipos. </template>
-      <template #loading> Cargando datos del inventario... </template>
-
-      <Column field="codigo_equipo" header="Código" sortable style="width: 10%">
-        <template #body="slotProps">
-          {{ valOrNA(slotProps.data.codigo_equipo) }}
         </template>
-      </Column>
 
-      <Column field="serial" header="Serial" sortable style="width: 15%">
-        <template #body="slotProps">
-          {{ valOrNA(slotProps.data.serial) }}
-        </template>
-      </Column>
+        <template #empty> No se encontraron equipos. </template>
+        <template #loading> Cargando datos del inventario... </template>
 
-      <Column field="tipo_equipo" header="Tipo" sortable style="width: 15%">
-        <template #body="slotProps">
-          {{ valOrNA(slotProps.data.tipo_equipo) }}
-        </template>
-      </Column>
+        <!-- Columna Código (Fondo Verde Claro) -->
+        <Column field="codigo_equipo" sortable headerClass="bg-emerald-50/50"
+          bodyClass="bg-emerald-50/30 font-medium text-emerald-800">
+          <template #header>
+            <span class="text-emerald-700">Código <span class="text-[10px] ml-1">↑↓</span></span>
+          </template>
+          <template #body="slotProps">
+            {{ valOrNA(slotProps.data.codigo_equipo) }}
+          </template>
+        </Column>
 
-      <Column field="marca" header="Marca" sortable style="width: 15%">
-        <template #body="slotProps">
-          {{ valOrNA(slotProps.data.marca) }}
-        </template>
-      </Column>
+        <!-- Columnas Estándar con Iconos de Ordenamiento Simplificados -->
+        <Column field="serial" sortable>
+          <template #header>
+            <span class="text-slate-700">Serial <span class="text-slate-400 text-[10px] ml-1">↑↓</span></span>
+          </template>
+          <template #body="slotProps">
+            {{ valOrNA(slotProps.data.serial) }}
+          </template>
+        </Column>
 
-      <Column field="modelo" header="Modelo" style="width: 15%">
-        <template #body="slotProps">
-          {{ valOrNA(slotProps.data.modelo) }}
-        </template>
-      </Column>
+        <Column field="tipo_equipo" sortable>
+          <template #header>
+            <span class="text-slate-700">Tipo <span class="text-slate-400 text-[10px] ml-1">↑↓</span></span>
+          </template>
+          <template #body="slotProps">
+            {{ valOrNA(slotProps.data.tipo_equipo) }}
+          </template>
+        </Column>
 
-      <Column field="lugar" header="Lugar" sortable style="width: 15%">
-        <template #body="slotProps">
-          {{ valOrNA(slotProps.data.lugar) }}
-        </template>
-      </Column>
+        <Column field="marca" sortable>
+          <template #header>
+            <span class="text-slate-700">Marca <span class="text-slate-400 text-[10px] ml-1">↑↓</span></span>
+          </template>
+          <template #body="slotProps">
+            {{ valOrNA(slotProps.data.marca) }}
+          </template>
+        </Column>
 
-      <Column header="Especificaciones" style="width: 20%">
-        <template #body="slotProps">
-          <div v-if="slotProps.data.especificaciones">
-            <span v-for="(value, key) in slotProps.data.especificaciones" :key="key" class="block text-sm">
-              <strong>{{ formatSpecKey(key) }}:</strong> {{ value }}
-            </span>
-          </div>
-          <span v-else>N/A</span>
-        </template>
-      </Column>
+        <Column field="modelo" header="Modelo" class="text-slate-600"></Column>
 
-      <Column header="Acciones" :exportable="false" style="width: 10%">
-        <template #body="slotProps">
-          <Button icon="pi pi-ellipsis-v" text rounded aria-haspopup="true" aria-controls="actions_menu"
-            @click="toggleActionsMenu($event, slotProps.data)" />
-        </template>
-      </Column>
-    </DataTable>
+        <Column field="lugar" sortable>
+          <template #header>
+            <span class="text-slate-700">Lugar <span class="text-slate-400 text-[10px] ml-1">↑↓</span></span>
+          </template>
+          <template #body="slotProps">
+            {{ valOrNA(slotProps.data.lugar) }}
+          </template>
+        </Column>
+
+        <!-- Especificaciones (Texto pequeño y negritas) -->
+        <Column header="Especificaciones" class="w-64">
+          <template #body="slotProps">
+            <div v-if="slotProps.data.especificaciones" class="flex flex-col gap-0.5">
+              <div v-for="(value, key) in slotProps.data.especificaciones" :key="key" class="text-[11px] leading-tight">
+                <span class="font-bold text-slate-700 capitalize">{{ formatSpecKey(key) }}:</span>
+                <span class="text-slate-600">{{ value }}</span>
+              </div>
+            </div>
+            <span v-else class="text-slate-400 italic text-xs">N/A</span>
+          </template>
+        </Column>
+
+        <!-- Botón de Acción (Kebab Menu) -->
+        <Column header="Acciones" :exportable="false" class="text-center">
+          <template #body="slotProps">
+            <Button icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded text-emerald-500 hover:bg-emerald-50"
+              @click="toggleActionsMenu($event, slotProps.data)" />
+          </template>
+        </Column>
+      </DataTable>
+    </div>
 
     <Menu ref="menuRef" :model="actionsMenuModel" :popup="true" />
     <Dialog v-model:visible="mostrarModalMtto" modal
@@ -524,7 +549,7 @@ const formatSpecKey = (key) => {
       :style="{ width: '90vw', maxWidth: '650px' }">
       <div class="flex flex-col gap-5 mt-2">
 
-        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm !text-sm">
           <h3 class="font-bold text-gray-800 mb-3 text-lg">Registrar Nueva Tarea</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
@@ -605,6 +630,10 @@ const formatSpecKey = (key) => {
   max-width: 95vw !important;
 }
 
+.p-menu-item-link{
+    padding: 0.35rem 0.60rem !important;
+    font-size: 14px !important;
+  }
 @media (max-width: 768px) {
   .p-datatable-stacked .p-datatable-tbody>tr>td .p-column-title {
     font-weight: 600;
@@ -621,6 +650,11 @@ const formatSpecKey = (key) => {
     margin-bottom: 1rem;
     border: 1px solid var(--p-surface-d);
     border-radius: 6px;
+  }
+
+  .p-menu-item-link{
+    padding: 0.25rem 0.50rem !important;
+    font-size: 12px !important;
   }
 }
 </style>

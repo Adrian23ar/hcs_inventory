@@ -88,7 +88,7 @@ const navLinks = [
         </div>
         <Button icon="pi pi-sign-out" :label="desktopExpanded ? 'Cerrar Sesión' : ''"
           class="!w-full !text-slate-500 hover:!text-rose-600 hover:!bg-rose-50 !bg-transparent !border-none transition-colors text-center"
-          :class="desktopExpanded ? ' !p-2 !text-sm' : '!justify-center !p-2'" @click="authStore.logout()" />
+          :class="desktopExpanded ? ' !p-2' : '!justify-center !p-2'" @click="authStore.logout()" />
       </div>
     </aside>
 
@@ -145,9 +145,9 @@ const navLinks = [
             </div>
           </div>
 
-          <div>
+          <div class="border-t pt-4">
             <Button icon="pi pi-sign-out border-slate-200" :label="desktopExpanded ? 'Cerrar Sesión' : ''"
-              class="!w-full !text-slate-500 hover:!text-rose-600 hover:!bg-rose-50 !bg-transparent !border-none transition-colors"
+              class="!w-full !text-red-500 !bg-red-50 hover:!text-rose-600 !text-xs hover:!bg-rose-50 !border-none transition-colors"
               @click="authStore.logout()" />
           </div>
 
