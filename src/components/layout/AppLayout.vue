@@ -154,12 +154,38 @@ const navLinks = [
         </nav>
       </Sidebar>
 
-      <main class=" p-4 md:p-8 ">
-        <div class=" mx-auto">
-          <RouterView />
+      <main class="p-4 md:p-8 overflow-x-hidden">
+        <div class="mx-auto">
+          <RouterView v-slot="{ Component }">
+            <transition name="page-slide" mode="out-in">
+              <component :is="Component" />
+            </transition>
+          </RouterView>
         </div>
-      </main>
+        </main>
 
     </div>
   </div>
 </template>
+
+<style scoped>
+.router-link-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animación de entrada y salida para las páginas */
+.page-slide-enter-active,
+.page-slide-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-slide-enter-from {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.page-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-15px);
+}
+</style>

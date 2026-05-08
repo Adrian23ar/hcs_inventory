@@ -108,8 +108,16 @@ const getSeverityForRole = (rol) => {
       </template>
 
       <template #empty> No se encontraron usuarios. </template>
-      <template #loading> Cargando datos de usuarios... </template>
-
+      <template #loading>
+        <div class="flex flex-col items-center justify-center p-8 bg-white/50 backdrop-blur-sm rounded-lg">
+          <div class="relative w-12 h-12 mb-4">
+            <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-sky-600 rounded-full border-t-transparent animate-spin">
+            </div>
+          </div>
+          <span class="text-sm font-bold text-slate-500 tracking-widest uppercase">Cargando Usuarios...</span>
+        </div>
+      </template>
       <!-- Columna Principal (Estilo Esmeralda) -->
       <Column field="email" sortable headerClass="bg-emerald-50/50"
         bodyClass="bg-emerald-50/30 font-medium text-emerald-800">

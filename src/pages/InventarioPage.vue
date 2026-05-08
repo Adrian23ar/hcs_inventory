@@ -101,8 +101,8 @@ const handleExportarPDF = () => {
 const abrirModalEquipo = (equipo = null) => {
   // Convertimos las ubicaciones en un formato válido para el 'select'
   const opcionesLugar = ubicacionesStore.ubicaciones.map(u => ({
-    label: u.nombre,
-    value: u.nombre // Guardamos el nombre en el equipo (o el id, pero el nombre es más amigable para exportar)
+    label: `${u.nombre} - ${u.piso || 'N/A'}`, // Formato solicitado: Nombre - Piso
+    value: `${u.nombre} - ${u.piso || 'N/A'}` // Guardamos el string completo para reportes
   }))
 
   // Generamos las opciones para vincular Monitores a CPUs o NVRs
@@ -471,8 +471,16 @@ const formatSpecKey = (key) => {
         </template>
 
         <template #empty> No se encontraron equipos. </template>
-        <template #loading> Cargando datos del inventario... </template>
-
+        <template #loading>
+          <div class="flex flex-col items-center justify-center p-8 bg-white/50 backdrop-blur-sm rounded-lg">
+            <div class="relative w-12 h-12 mb-4">
+              <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+              <div class="absolute inset-0 border-4 border-sky-600 rounded-full border-t-transparent animate-spin">
+              </div>
+            </div>
+            <span class="text-sm font-bold text-slate-500 tracking-widest uppercase">Cargando Inventario...</span>
+          </div>
+        </template>
         <!-- Columna Código (Fondo Verde Claro) -->
         <Column field="codigo_equipo" sortable headerClass="bg-emerald-50/50"
           bodyClass="bg-emerald-50/30 font-medium text-emerald-800">

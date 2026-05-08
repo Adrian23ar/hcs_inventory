@@ -24,6 +24,31 @@ onMounted(() => {
 })
 
 const abrirModalUbicacion = (ubicacion = null) => {
+  const opcionesPisos = [
+    { label: 'Planta Baja', value: 'Planta Baja' },
+    { label: 'Mezzanina', value: 'Mezzanina' },
+    { label: 'P1', value: 'P1' },
+    { label: 'P2', value: 'P2' },
+    { label: 'P3', value: 'P3' },
+    { label: 'P4', value: 'P4' },
+    { label: 'P5', value: 'P5' },
+    { label: 'P6', value: 'P6' },
+    { label: 'P7', value: 'P7' },
+    { label: 'P8', value: 'P8' },
+    { label: 'Piso 1', value: 'Piso 1' },
+    { label: 'Piso 2', value: 'Piso 2' },
+    { label: 'Piso 3', value: 'Piso 3' },
+    { label: 'Piso 4', value: 'Piso 4' },
+    { label: 'Piso 5', value: 'Piso 5' },
+    { label: 'Piso 6', value: 'Piso 6' },
+    { label: 'Piso 7', value: 'Piso 7' },
+    { label: 'Piso 8', value: 'Piso 8' },
+    { label: 'Piso 9', value: 'Piso 9' },
+    { label: 'Piso 10', value: 'Piso 10' },
+    { label: 'Piso 11', value: 'Piso 11' },
+    { label: 'PH', value: 'PH' }
+  ];
+
   dialog.open(GenericFormPrompt, {
     props: {
       header: ubicacion ? `Editar Ubicación` : 'Nueva Ubicación',
@@ -33,7 +58,14 @@ const abrirModalUbicacion = (ubicacion = null) => {
     data: {
       fields: [
         { name: 'nombre', label: 'Nombre de la Ubicación', type: 'text', required: true, placeholder: 'Ej: Administración' },
-        { name: 'descripcion', label: 'Descripción (Opcional)', type: 'text', placeholder: 'Ej: Edificio principal, piso 1' }
+        {
+          name: 'piso',
+          label: 'Piso',
+          type: 'select',
+          required: true,
+          options: opcionesPisos,
+          placeholder: 'Seleccione el piso'
+        }
       ],
       initialState: ubicacion ? { ...ubicacion } : {},
       submitLabel: ubicacion ? 'Actualizar' : 'Guardar',
@@ -124,16 +156,20 @@ const toggleActionsMenu = (event, data) => {
       </template>
 
       <template #empty> No se encontraron ubicaciones registradas. </template>
+      <template #loading>
+        <div class="flex flex-col items-center justify-center p-8 bg-white/50 backdrop-blur-sm rounded-lg">
+          <div class="relative w-12 h-12 mb-4">
+            <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-sky-600 rounded-full border-t-transparent animate-spin">
+            </div>
+          </div>
+          <span class="text-sm font-bold text-slate-500 tracking-widest uppercase">Cargando Ubicaciones...</span>
+        </div>
+      </template>
 
       <!-- Columna Principal (Estilo Esmeralda) -->
-      <Column field="nombre" sortable headerClass="bg-emerald-50/50"
-        bodyClass="bg-emerald-50/30 font-medium text-emerald-800" style="width: 40%">
-        <template #header>
-          <span class="text-emerald-700">Nombre <span class="text-[10px] ml-1">↑↓</span></span>
-        </template>
-      </Column>
-
-      <Column field="descripcion" header="Descripción" class="text-slate-600" style="width: 50%"></Column>
+<Column field="nombre" header="Nombre" sortable style="width: 45%"></Column>
+  <Column field="piso" header="Piso" sortable style="width: 45%"></Column> <Column header="Acciones" style="width: 10%">...</Column>
 
       <Column header="Acciones" :exportable="false" class="text-center" style="width: 10%">
         <template #body="slotProps">
