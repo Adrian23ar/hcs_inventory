@@ -184,7 +184,7 @@ const getColorClass = (index) => {
         <div class="flex gap-2 mt-auto">
           <div v-for="(cat, index) in topCategorias" :key="cat"
             class="flex flex-col items-center justify-center gap-1.5 bg-white shadow-sm border border-slate-50 rounded-xl py-2 px-1 flex-1">
-            <div class="w-3 h-3 rounded-full shadow-sm" :class="getColorClass(index)"></div>
+            <div class="w-5 h-5 rounded-full shadow-sm" :class="getColorClass(index)"></div>
             <span class="text-[9px] font-bold text-slate-500 uppercase truncate w-full text-center">{{ getShortName(cat)
               }}</span>
           </div>

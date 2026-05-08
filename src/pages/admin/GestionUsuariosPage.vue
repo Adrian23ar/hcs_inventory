@@ -95,14 +95,14 @@ const getSeverityForRole = (rol) => {
 <template>
   <div class="bg-white rounded-lg shadow-sm border border-gray-200">
     <DataTable :value="usuariosStore.usuarios" :loading="usuariosStore.isLoading" paginator :rows="10" removableSort
-      stripedRows responsiveLayout="stack" breakpoint="768px" tableStyle="min-width: 50rem">
+      stripedRows responsiveLayout="stack" breakpoint="768px" tableStyle="min-width: 50rem"
+      class="p-datatable-sm p-4 text-xs">
+
       <template #header>
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 p-2">
           <div>
-            <h1 class="text-3xl font-bold text-gray-800">Gestión de Usuarios</h1>
-            <p class="text-gray-500">
-              Asignar roles al personal del hotel
-            </p>
+            <h1 class="text-2xl font-bold text-slate-800">Gestión de Usuarios</h1>
+            <p class="text-slate-500 text-sm">Asignar roles al personal del hotel.</p>
           </div>
         </div>
       </template>
@@ -110,18 +110,34 @@ const getSeverityForRole = (rol) => {
       <template #empty> No se encontraron usuarios. </template>
       <template #loading> Cargando datos de usuarios... </template>
 
-      <Column field="email" header="Email" sortable></Column>
-      <Column field="nombre" header="Nombre" sortable></Column>
-
-      <Column field="rol" header="Rol" sortable>
-        <template #body="slotProps">
-          <Tag :value="slotProps.data.rol" :severity="getSeverityForRole(slotProps.data.rol)" rounded />
+      <!-- Columna Principal (Estilo Esmeralda) -->
+      <Column field="email" sortable headerClass="bg-emerald-50/50"
+        bodyClass="bg-emerald-50/30 font-medium text-emerald-800">
+        <template #header>
+          <span class="text-emerald-700">Email <span class="text-[10px] ml-1">↑↓</span></span>
         </template>
       </Column>
 
-      <Column header="Acciones" :exportable="false" style="width: 10%">
+      <Column field="nombre" sortable>
+        <template #header>
+          <span class="text-slate-700">Nombre <span class="text-slate-400 text-[10px] ml-1">↑↓</span></span>
+        </template>
+      </Column>
+
+      <Column field="rol" sortable>
+        <template #header>
+          <span class="text-slate-700">Rol <span class="text-slate-400 text-[10px] ml-1">↑↓</span></span>
+        </template>
         <template #body="slotProps">
-          <Button icon="pi pi-pencil" text rounded @click="abrirModalEditarRol(slotProps.data)" />
+          <Tag :value="slotProps.data.rol" :severity="getSeverityForRole(slotProps.data.rol)" rounded
+            class="text-[10px]" />
+        </template>
+      </Column>
+
+      <Column header="Acciones" :exportable="false" class="text-center">
+        <template #body="slotProps">
+          <Button icon="pi pi-pencil" class="p-button-text p-button-rounded text-emerald-500 hover:bg-emerald-50"
+            @click="abrirModalEditarRol(slotProps.data)" />
         </template>
       </Column>
     </DataTable>

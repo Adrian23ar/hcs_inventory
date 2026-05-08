@@ -21,7 +21,7 @@ const navLinks = [
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 flex overflow-hidden">
+  <div class="min-h-screen flex overflow-hidden bg-gradient-to-br from-[#e0eefa] to-[#edeff8]">
 
     <aside
       class="hidden lg:flex flex-col bg-white fixed h-full z-20 border-r border-slate-200 transition-all duration-300"
@@ -82,7 +82,7 @@ const navLinks = [
           </div>
           <div class="flex flex-col min-w-0 transition-opacity"
             :class="desktopExpanded ? 'opacity-100' : 'opacity-0 hidden'">
-            <span class="text-xs font-bold text-slate-800 truncate">{{ authStore.user?.email.split('@')[0] }}</span>
+            <span class="text-xs font-bold text-slate-800 truncate">{{ authStore.userDetails?.nombre }}</span>
             <span class="text-[10px] text-slate-500 truncate text-ellipsis">{{ authStore.user?.email }}</span>
           </div>
         </div>
@@ -154,7 +154,7 @@ const navLinks = [
         </nav>
       </Sidebar>
 
-      <main class="bg-gradient-to-br from-[#e4eef7] to-[#f1f2f6] p-4 md:p-8">
+      <main class=" p-4 md:p-8 ">
         <div class=" mx-auto">
           <RouterView />
         </div>

@@ -431,7 +431,7 @@ const formatSpecKey = (key) => {
 </script>
 
 <template>
-  <div class="rounded">
+  <div class="rounded pb-8">
     <!-- Contenedor Principal -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
 
@@ -439,7 +439,8 @@ const formatSpecKey = (key) => {
         :globalFilterFields="['codigo_equipo', 'serial', 'marca', 'modelo', 'lugar', 'ip', 'mac_address']"
         :value="inventarioStore.equipos" :loading="inventarioStore.isLoading" paginator :rows="10"
         :rowsPerPageOptions="[5, 10, 20, 50]" removableSort stripedRows tableStyle="min-width: 50rem"
-        responsiveLayout="stack" breakpoint="768px" sortField="codigo_equipo" :sortOrder="1" class="p-datatable-sm p-4 text-xs">
+        responsiveLayout="stack" breakpoint="768px" sortField="codigo_equipo" :sortOrder="1"
+        class="p-datatable-sm p-4 text-xs">
         <!-- Encabezado Personalizado -->
         <template #header>
           <div class="flex flex-col md:flex-row justify-between items-center gap-4 p-2">
@@ -457,11 +458,13 @@ const formatSpecKey = (key) => {
               </div>
 
               <div class="flex gap-3 !text-sm justify-center md:justify-end ">
-                <Button label="Excel" icon="pi pi-file-excel" class="!text-sm" severity="success" @click="handleExportarExcel"
-                  :class="{ 'hidden md:flex': isMobile }" />
-                <Button label="PDF" icon="pi pi-file-pdf" class="!text-sm" severity="danger" @click="handleExportarPDF"
-                  :class="{ 'hidden md:flex': isMobile }" />
-                <Button label="Nuevo" icon="pi pi-plus" class="!text-sm" @click="abrirModalEquipo()" />
+                <Button label="Excel" icon="pi pi-file-excel" class="!text-sm" raised rounded variant="outlined"
+                  severity="success" @click="handleExportarExcel" :class="{ 'hidden md:flex': isMobile }" />
+                <Button label="PDF" icon="pi pi-file-pdf" class="!text-sm" raised rounded variant="outlined"
+                  severity="danger" @click="handleExportarPDF" :class="{ 'hidden md:flex': isMobile }" />
+                <Button label="Nuevo" icon="pi pi-plus" class="!text-sm" raised rounded variant="outlined"
+                  @click="abrirModalEquipo()" />
+
               </div>
             </div>
           </div>
@@ -549,8 +552,8 @@ const formatSpecKey = (key) => {
       :style="{ width: '90vw', maxWidth: '650px' }">
       <div class="flex flex-col gap-5 mt-2">
 
-        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm !text-sm">
-          <h3 class="font-bold text-gray-800 mb-3 text-lg">Registrar Nueva Tarea</h3>
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm text-sm">
+          <h3 class="font-bold text-gray-800 mb-3">Registrar Nueva Tarea</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
@@ -573,12 +576,12 @@ const formatSpecKey = (key) => {
               placeholder="Ej: Limpieza interna, limpieza de periféricos, actualización de firmware..."></textarea>
           </div>
           <div class="flex justify-end">
-            <Button label="Guardar Registro" icon="pi pi-save" @click="guardarMantenimiento" />
+            <Button label="Guardar Registro" class="!text-sm" icon="pi pi-save" @click="guardarMantenimiento" />
           </div>
         </div>
 
         <div>
-          <h3 class="font-bold text-gray-800 mb-3 text-lg flex justify-between items-center">
+          <h3 class="font-bold text-gray-800 mb-3 text-lg flex justify-between items-center text-sm">
             Historial de Mantenimientos
             <span v-if="equipoParaMtto?.proxima_fecha_mantenimiento"
               class="text-xs font-normal bg-blue-100 text-blue-800 px-2 py-1 rounded">
@@ -589,7 +592,7 @@ const formatSpecKey = (key) => {
           <div v-if="equipoParaMtto?.historial_mantenimiento?.length > 0"
             class="flex flex-col gap-3 max-h-64 overflow-y-auto pr-2">
             <div v-for="mtto in equipoParaMtto.historial_mantenimiento" :key="mtto.id"
-              class="p-3 border border-gray-200 rounded-lg bg-white shadow-sm relative">
+              class="p-3 border border-gray-200 rounded-lg bg-white shadow-sm relative text-sm">
               <div class="flex justify-between border-b border-gray-100 pb-2 mb-2">
                 <span class="font-bold text-gray-700">{{ mtto.fecha }}</span>
                 <span class="px-2 py-0.5 rounded text-xs font-medium"
@@ -630,10 +633,16 @@ const formatSpecKey = (key) => {
   max-width: 95vw !important;
 }
 
-.p-menu-item-link{
-    padding: 0.35rem 0.60rem !important;
-    font-size: 14px !important;
-  }
+.p-menu-item-link {
+  padding: 0.35rem 0.60rem !important;
+  font-size: 14px !important;
+}
+
+.p-inputtext,
+.p-select-label {
+  font-size: 0.875rem !important;
+}
+
 @media (max-width: 768px) {
   .p-datatable-stacked .p-datatable-tbody>tr>td .p-column-title {
     font-weight: 600;
@@ -652,7 +661,7 @@ const formatSpecKey = (key) => {
     border-radius: 6px;
   }
 
-  .p-menu-item-link{
+  .p-menu-item-link {
     padding: 0.25rem 0.50rem !important;
     font-size: 12px !important;
   }

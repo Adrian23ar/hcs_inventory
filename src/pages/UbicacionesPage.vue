@@ -110,21 +110,35 @@ const toggleActionsMenu = (event, data) => {
 <template>
   <div class="bg-white rounded-lg shadow-sm p-1 border border-gray-200">
     <DataTable :value="ubicacionesStore.ubicaciones" :loading="ubicacionesStore.isLoading" paginator :rows="10"
-      stripedRows responsiveLayout="stack">
+      stripedRows responsiveLayout="stack" breakpoint="768px" class="p-datatable-sm p-4 text-xs">
+
       <template #header>
-        <div class="flex justify-between items-center">
-          <h1 class="text-3xl font-bold text-gray-800">Ubicaciones / Departamentos</h1>
-          <Button label="Nueva Ubicación" icon="pi pi-plus" @click="abrirModalUbicacion()" />
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 p-2">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-800">Ubicaciones / Departamentos</h1>
+            <p class="text-slate-500 text-sm">Gestión de áreas y departamentos del hotel.</p>
+          </div>
+          <Button label="Nueva" icon="pi pi-plus" class="!text-sm" raised rounded variant="outlined"
+            @click="abrirModalUbicacion()" />
         </div>
       </template>
 
       <template #empty> No se encontraron ubicaciones registradas. </template>
 
-      <Column field="nombre" header="Nombre" sortable style="width: 45%"></Column>
-      <Column field="descripcion" header="Descripción" style="width: 45%"></Column>
-      <Column header="Acciones" style="width: 10%">
+      <!-- Columna Principal (Estilo Esmeralda) -->
+      <Column field="nombre" sortable headerClass="bg-emerald-50/50"
+        bodyClass="bg-emerald-50/30 font-medium text-emerald-800" style="width: 40%">
+        <template #header>
+          <span class="text-emerald-700">Nombre <span class="text-[10px] ml-1">↑↓</span></span>
+        </template>
+      </Column>
+
+      <Column field="descripcion" header="Descripción" class="text-slate-600" style="width: 50%"></Column>
+
+      <Column header="Acciones" :exportable="false" class="text-center" style="width: 10%">
         <template #body="slotProps">
-          <Button icon="pi pi-ellipsis-v" text rounded @click="toggleActionsMenu($event, slotProps.data)" />
+          <Button icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded text-emerald-500 hover:bg-emerald-50"
+            @click="toggleActionsMenu($event, slotProps.data)" />
         </template>
       </Column>
     </DataTable>
